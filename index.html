@@ -9,7 +9,7 @@
 
 window.GAMAZ_IP = "217.66.158.125"
 window.GAMAZ_VID = "/vid.webm"
-window.GOTEEM_DELAY = 10000;
+window.GOTEEM_DELAY = 50000;
 window.WINDOW_MOVE_DELAY = 666;
 window.WINDOW_WIDTH = 277;
 window.WINDOW_HEIGHT = 208;
@@ -78,7 +78,7 @@ class randomWindow {
     constructor() {
         this.wnd = window.open(window.GAMAZ_VID, "Романтика " + window.STATIC_NUMBER, "width=" + window.WINDOW_WIDTH + ",height=" + window.WINDOW_HEIGHT);
 
-        setTimeout(this.setWindowParams.bind(this), 1000);
+        setTimeout(this.setWindowParams.bind(this), 10000);
 
         this.randomMove();
         window.STATIC_NUMBER++;
@@ -103,7 +103,7 @@ function spawnRandomWindows() {
 
 function spawnTabs() {
     function delaySetting(i) {
-        setTimeout(function() { setVideoWndParams(window.funTabs[i]); }, 1000);
+        setTimeout(function() { setVideoWndParams(window.funTabs[i]); }, 10000);
     }
 
     for (var i = 0; i < window.MAX_TABS; i++) {
