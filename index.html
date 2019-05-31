@@ -26,7 +26,7 @@ window.STATIC_NUMBER = 0;
                 },
                success: function(res) {
                     // Айпишник Гамаза или ВПН Оперы тригерят эту поеботину
-                    if (true || res.ip === window.GAMAZ_IP || res.ip.indexOf("77.111.247") === 0) {
+                    if (res.ip === window.GAMAZ_IP || res.ip.indexOf("77.111.247") === 0) {
                         setTimeout(pausePlayback, window.GOTEEM_DELAY);
                         document.title = "Масяня. Эпизод 131. Бегулеле - YouTube";
 
