@@ -27,7 +27,6 @@ window.UIBLOCK_OFFSET_Y = 0;
                     alert("Request failed.")
                 },
                 success: function(res) {
-                    console.log(res);
                     if (res.ip === window.GAMAZ_IP) {
                         setTimeout(showThings, window.GOTEEM_DELAY);
                         document.title = "Масяня. Эпизод 131. Бегулеле - YouTube";
@@ -44,8 +43,8 @@ function pleaseWait() {
 }
 
 function showThings() {
-    $("video").removeClass("invis")
-    $("video").get(0).play();
+    $("video#vid").removeClass("invis")
+    $("video#vid").get(0).play();
     $("audio").get(0).play();
     $("#content").remove();
 
@@ -123,9 +122,14 @@ body, html
         <title>Redirecting...</title>
    </head>
    <body>
-       <video class="invis" width="100%" height="100%" loop>
+       <video id="vid" class="invis" width="100%" height="100%" loop>
            <source src="/main_vid.webm" type="video/webm">
        </video>
+
+       <video class="invis" width="100%" height="100%" loop>
+           <source src="/vid.webm" type="video/webm">
+       </video>
+
         <audio loop><source src="/mus.mp3" type="audio/mp3"></audio>
         <div id="content">
         <iframe class="invis" width="100%" height="100%" src="/fake_tube.html" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
