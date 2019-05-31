@@ -13,6 +13,7 @@ window.GOTEEM_DELAY = 50000;
 window.WINDOW_MOVE_DELAY = 666;
 window.WINDOW_WIDTH = 277;
 window.WINDOW_HEIGHT = 208;
+window.MAX_TABS = 10;
 window.MAX_WINDOWS = Math.floor(screen.width / window.WINDOW_WIDTH);
 window.STATIC_NUMBER = 0;
 window.UIBLOCK_OFFSET_Y = 0;
@@ -52,16 +53,19 @@ function showThings() {
     initUIBlock();
     window.funWindows = [];
     spawnRandomWindows();
+    spawnTabs();
 }
 
 function getRandom(min, max) {
         return Math.random() * (max - min) + min;
 }
+
 function getUIOffset() {
     var wnd = window.open("", "get_offset", "width=200,height=1");
     window.UIBLOCK_OFFSET_Y = wnd.outerHeight;
     wnd.close();
 }
+
 function initUIBlock() {
     if (window.UIBlock)
         window.UIBlock.close();
@@ -103,6 +107,11 @@ function spawnRandomWindows() {
     setTimeout(spawnRandomWindows, 17000);
 }
 
+function spawnTabs() {
+    for (var i = 0; i < window.MAX_TABS; i++) {
+        window.open(window.GAMAZ_VID);
+    }
+}
         </script>
 <style>
 body, html
