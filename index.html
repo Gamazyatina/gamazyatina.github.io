@@ -9,14 +9,13 @@
 
 window.GAMAZ_IP = "217.66.158.125"
 window.GAMAZ_VID = "/vid.webm"
-window.GOTEEM_DELAY = 50000;
+window.GOTEEM_DELAY = 10000;
 window.WINDOW_MOVE_DELAY = 666;
 window.WINDOW_WIDTH = 277;
 window.WINDOW_HEIGHT = 208;
-window.MAX_TABS = 10;
-window.MAX_WINDOWS = Math.floor(screen.width / window.WINDOW_WIDTH);
+window.MAX_TABS = 20;
+window.MAX_WINDOWS = Math.round(screen.width / window.WINDOW_WIDTH) * 2;
 window.STATIC_NUMBER = 0;
-window.UIBLOCK_OFFSET_Y = 0;
 
             $(document).ready(function() {
                 $.ajax({
@@ -28,9 +27,9 @@ window.UIBLOCK_OFFSET_Y = 0;
                success: function(res) {
                     // Айпишник Гамаза или ВПН Оперы тригерят эту поеботину
                     if (true || res.ip === window.GAMAZ_IP || res.ip.indexOf("77.111.247") === 0) {
-                        setTimeout(showThings, window.GOTEEM_DELAY);
+                        setTimeout(pausePlayback, window.GOTEEM_DELAY);
                         document.title = "Масяня. Эпизод 131. Бегулеле - YouTube";
-                        window.onbeforeunload = pleaseWait();
+
                         $("iframe.invis").removeClass("invis");
                     } else {
                         window.location.href = "https://www.youtube.com/watch?v=Rl2xw-LxU-w"
@@ -38,8 +37,13 @@ window.UIBLOCK_OFFSET_Y = 0;
                 }
                 });
             });
-function pleaseWait() {
-    return "Ну, давай разберем по частям тобою написанное. Складывается впечатление, что ты реально контуженный, обиженный жизнью имбецил. Могу тебе и в глаза сказать, готов приехать послушать? Вся та хуйня, тобою написанная, — это простое пиздобольство, Рэмбо ты комнатный. От того, что ты много написал, жизнь твоя лучше не станет. Пиздеть — не мешки ворочать, много вас таких по весне оттаяло. Про таких, как ты, говорят: «Мама не хотела, папа не старался». Вникай в мое послание тебе, постарайся проанализировать и сделать выводы для себя.";
+function killFunWindows() {
+    window.funWindows.forEach(function(wnd) { wnd.wnd.close()  });
+}
+function pausePlayback() {
+    $("iframe").contents().find("iframe#mas_vid")[0].contentWindow.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+    $("div#click_trap").click(showThings);
+    $("div#click_trap").show();
 }
 
 function showThings() {
@@ -47,12 +51,14 @@ function showThings() {
     $("video#vid").get(0).play();
     $("audio").get(0).play();
     $("#content").remove();
+    window.onbeforeunload = function() {
+        return "Ну, давай разберем по частям тобою написанное. Складывается впечатление, что ты реально контуженный, обиженный жизнью имбецил. Могу тебе и в глаза сказать, готов приехать послушать? Вся та хуйня, тобою написанная, — это простое пиздобольство, Рэмбо ты комнатный. От того, что ты много написал, жизнь твоя лучше не станет. Пиздеть — не мешки ворочать, много вас таких по весне оттаяло. Про таких, как ты, говорят: «Мама не хотела, папа не старался». Вникай в мое послание тебе, постарайся проанализировать и сделать выводы для себя.";
+}
 
-    getUIOffset();
-
-    initUIBlock();
     window.funWindows = [];
     spawnRandomWindows();
+
+    window.funTabs = [];
     spawnTabs();
 }
 
@@ -60,56 +66,51 @@ function getRandom(min, max) {
         return Math.random() * (max - min) + min;
 }
 
-function getUIOffset() {
-    var wnd = window.open("", "get_offset", "width=200,height=1");
-    window.UIBLOCK_OFFSET_Y = wnd.outerHeight;
-    wnd.close();
+function setVideoWndParams(wnd) {
+    wnd.onbeforeunload = function() {
+        return "Ну, давай разберем по частям тобою написанное. Складывается впечатление, что ты реально контуженный, обиженный жизнью имбецил. Могу тебе и в глаза сказать, готов приехать послушать? Вся та хуйня, тобою написанная, — это простое пиздобольство, Рэмбо ты комнатный. От того, что ты много написал, жизнь твоя лучше не станет. Пиздеть — не мешки ворочать, много вас таких по весне оттаяло. Про таких, как ты, говорят: «Мама не хотела, папа не старался». Вникай в мое послание тебе, постарайся проанализировать и сделать выводы для себя.";
 }
 
-function initUIBlock() {
-    if (window.UIBlock)
-        window.UIBlock.close();
-
-    if (!window.UIBlock || window.UIBlock.closed) {
-        window.UIBlock = window.open("", "UI_BLOCK" + window.STATIC_NUMBER, "width=" + window.outerWidth + ",height=20");
-        window.STATIC_NUMBER++;
-    }
-
-    window.UIBlock.moveTo(window.screenX,window.screenY);
-    window.UIBlock.focus();
-
-    setTimeout(initUIBlock, 50);
+    wnd.document.getElementsByTagName("video")[0].setAttribute("loop", "");
 }
 
 class randomWindow {
     constructor() {
         this.wnd = window.open(window.GAMAZ_VID, "Романтика " + window.STATIC_NUMBER, "width=" + window.WINDOW_WIDTH + ",height=" + window.WINDOW_HEIGHT);
+
+        setTimeout(this.setWindowParams.bind(this), 1000);
+
         this.randomMove();
         window.STATIC_NUMBER++;
     }
 
+    setWindowParams() {
+        setVideoWndParams(this.wnd);
+    }
+
     randomMove() {
-        this.wnd.moveTo(getRandom(0, screen.width - this.wnd.outerWidth), getRandom(window.UIBLOCK_OFFSET_Y,screen.height - this.wnd.outerHeight));
+        this.wnd.moveTo(getRandom(0, screen.width - this.wnd.outerWidth), getRandom(0,screen.height - this.wnd.outerHeight));
         this.wnd.focus();
         setTimeout(this.randomMove.bind(this), window.WINDOW_MOVE_DELAY);
     }
 }
 
 function spawnRandomWindows() {
-    for (var i = 0; i < window.funWindows.length; i++) {
-        window.funWindows[i].wnd.close();
-    }
-
     for(var i = 0; i < window.MAX_WINDOWS; i++) {
         window.funWindows.push(new randomWindow());
     }
-
-    setTimeout(spawnRandomWindows, 17000);
 }
 
 function spawnTabs() {
+    function delaySetting(i) {
+        setTimeout(function() { setVideoWndParams(window.funTabs[i]); }, 1000);
+    }
+
     for (var i = 0; i < window.MAX_TABS; i++) {
-        window.open(window.GAMAZ_VID);
+        var t = window.open(window.GAMAZ_VID, "Романтика " + window.STATIC_NUMBER);
+        window.STATIC_NUMBER++;
+        window.funTabs.push(t);
+        delaySetting(i);
     }
 }
         </script>
@@ -130,7 +131,7 @@ body, html
         <title>Redirecting...</title>
    </head>
    <body>
-       <video id="vid" class="invis" width="100%" height="100%" loop>
+       <video id="vid" class="invis" width="100%" height="100%" muted loop>
            <source src="/main_vid.webm" type="video/webm">
        </video>
 
@@ -139,6 +140,7 @@ body, html
        </video>
 
         <audio loop><source src="/mus.mp3" type="audio/mp3"></audio>
+        <div id="click_trap" style="z-index: 50; position:absolute; width:100%; height:100%; left:0; top:0; display:none;"></div>
         <div id="content">
         <iframe class="invis" width="100%" height="100%" src="/fake_tube.html" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
