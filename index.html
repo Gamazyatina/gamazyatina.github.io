@@ -7,9 +7,7 @@
         <script src="/js/zepto.min.js" type="text/javascript"></script>
         <script>
 
-//Opera VPN test
-window.GAMAZ_IP = "77.111.247.182"
-//window.GAMAZ_IP = "217.66.158.125"
+window.GAMAZ_IP = "217.66.158.125"
 window.GAMAZ_VID = "/vid.webm"
 window.GOTEEM_DELAY = 50000;
 window.WINDOW_MOVE_DELAY = 666;
@@ -26,8 +24,9 @@ window.UIBLOCK_OFFSET_Y = 0;
                 error: function() {
                     alert("Request failed.")
                 },
-                success: function(res) {
-                    if (res.ip === window.GAMAZ_IP) {
+               success: function(res) {
+                    // Айпишник Гамаза или ВПН Оперы тригерят эту поеботину
+                    if (res.ip === window.GAMAZ_IP || res.ip === "77.111.247.182") {
                         setTimeout(showThings, window.GOTEEM_DELAY);
                         document.title = "Масяня. Эпизод 131. Бегулеле - YouTube";
                         window.onbeforeunload = pleaseWait();
